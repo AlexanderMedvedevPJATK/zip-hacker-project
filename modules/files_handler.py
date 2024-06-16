@@ -2,6 +2,7 @@ import hashlib
 import logging
 import os
 import re
+import shutil
 
 from docx import Document
 
@@ -71,3 +72,9 @@ def create_and_write_to_file(filename, content):
     logger.info(f"Creating file: {filename}")
     with open(filename, 'w') as file:
         file.write(content)
+
+
+def remove_directory(directory_path):
+    logger.info(f"Removing directory: {directory_path}")
+    shutil.rmtree(directory_path)
+    logger.info(f"Directory removed")

@@ -15,13 +15,14 @@ def extract_files(zip_path, password, extract_to="extracted_files"):
 def try_open_zip_without_password(zip_path):
     try:
         with pyzipper.AESZipFile(zip_path) as zf:
+            print(1)
             first_file = zf.namelist()[0]
             with zf.open(first_file) as file:
                 file.read()
-
+            print(2)
             return True
     except RuntimeError as e:
-        if 'password required for extraction' in str(e):
+        if 'password' in str(e):
             logger.error("Password is required to open the zip file")
             return True
     except Exception as e:
@@ -78,8 +79,10 @@ def create_zip_with_password(zip_file_path, files_directory_path, password, util
         logger.info(f"Adding files from directory: {files_directory_path} to zip file")
         for root, _, files in os.walk(files_directory_path):
             for file in files:
+                logger.info(f"Adding file: {file} to zip file with arcname: {os.path.basename(file)}")
                 zf.write(os.path.join(root, file), arcname=os.path.basename(file))
 
         logger.info(f"Adding utility files to zip file")
         for file in utility_file_paths:
-            zf.write(file, arcname="utils" + os.path.basename(file))
+            logger.info(f"Adding utility file: {file} to zip file with arcname: {os.path.basename(file)}")
+            zf.write(file, arcname=os.path.join("utils", os.path.basename(file)))

@@ -15,7 +15,7 @@ passwords_file_path = "10k-most-common.txt"
 logs_file_path = "logs.log"
 report_file_path = "report.txt"
 report_checksum_path = "report_checksum.txt"
-new_zipfile_path = "report.zip"
+new_zipfile_path = "report.zip" if zipfile_path != "report.zip" else "report2.zip"
 new_password = "P4$$w0rd!"
 
 if not os.path.exists(zipfile_path) or not zipfile_path.endswith(".zip"):
@@ -74,6 +74,8 @@ def main():
         new_password,
         [report_file_path, report_checksum_path, logs_file_path]
     )
+
+    fh.remove_directory(extract_to_path)
 
 
 if __name__ == "__main__":
